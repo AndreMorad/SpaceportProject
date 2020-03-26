@@ -39,7 +39,7 @@ namespace SpaceportProject
             return this;
         }
 
-        public IAddStarship StarshipControl()
+        public IAddStarship StarshipControl(string shipName)
         {
             bool loop = true;
             while (loop)
@@ -48,6 +48,17 @@ namespace SpaceportProject
                 //var starshipRequest = new RestRequest($"starships/?search={Console.ReadLine()}", DataFormat.Json);
                 //var starshipResponse = client.Execute(starshipRequest);
                 //var starship = JsonConvert.DeserializeObject<JSONStarshipRoot>(starshipResponse.Content);
+                if (starship.results.Count > 0)
+                {
+                    Console.WriteLine($"{shipName} ready for parking");
+                    createStarship.ShipName = shipName;
+                    createStarship.PricePerDay = 1000;
+                    loop = false;
+                }
+                else
+                {
+                    Console.WriteLine("Unauthorised spaceship");
+                }
             }
 
             return this;

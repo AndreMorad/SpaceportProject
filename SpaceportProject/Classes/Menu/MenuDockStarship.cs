@@ -8,8 +8,6 @@ namespace SpaceportProject
 {
     public class MenuDockStarship : MenuCheckOutStarship
     {
-        public static CreateNewCustomer a = new CreateNewCustomer();
-
         public static void ControlParkingspace()
         {
             MyContext myContext = new MyContext();
@@ -43,7 +41,7 @@ namespace SpaceportProject
 
                 if (person.results.Count > 0 && starship.results.Count > 0)
                 {
-                    ControlPersonInDatabase(person.results[0].name);
+                    ControlPersonInDatabase(person.results[0].name, starship.results[0].name);
                     loop = false;
                 }
                 else
@@ -64,18 +62,18 @@ namespace SpaceportProject
             }
         }
 
-        public static void ControlPersonInDatabase(string name)
+        public static void ControlPersonInDatabase(string personName, string shipName)
         {
             MyContext context = new MyContext();
-            var personCheck = context.Persons.Where(p => p.Name == name).ToList();
+            var personCheck = context.Persons.Where(p => p.Name == personName).ToList();
             if (personCheck.Count > 0)
             {
-                Console.WriteLine($"Welcome back {personCheck[0].Name}");
-                var newStarship = new CreateShip(personCheck[0]).StarshipControl().Charge().AddToDataBase();
+                Console.WriteLine($"Welcome back {personName}");
+                var newStarship = new CreateShip(personCheck[0]).StarshipControl(shipName).Charge().AddToDataBase();
             }
             else
             {
-                var newCustomer = new CreateNewCustomer().AddNameToPerson(name).AddFunds().StarshipControl().Charge().AddToDataBase();
+                var newCustomer = new CreateNewCustomer().AddNameToPerson(personName).AddFunds().StarshipControl(shipName).Charge().AddToDataBase();
             }
         }
     }

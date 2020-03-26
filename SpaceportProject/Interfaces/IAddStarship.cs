@@ -2,7 +2,7 @@
 {
     public interface IAddStarship
     {
-        IAddStarship StarshipControl();
+        IAddStarship StarshipControl(string shipName);
 
         IAddStarship Charge();
 

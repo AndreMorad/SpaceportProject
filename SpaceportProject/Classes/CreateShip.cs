@@ -15,7 +15,7 @@ namespace SpaceportProject
             this.createPerson = person;
         }
 
-        public IAddStarship StarshipControl()
+        public IAddStarship StarshipControl(string shipName)
         {
             RestClient client = new RestClient("https://swapi.co/api/");
             bool loop = true;
