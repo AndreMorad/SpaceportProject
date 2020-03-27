@@ -21,15 +21,15 @@ namespace SpaceportProject
 
         public IAddPerson AddFunds()
         {
-            Console.Write("Please add credits to your card (Minimum 1000 credits): ");
-            bool loop = false;
-            while (loop == false)
+            Console.WriteLine("Please add credits to your card (Minimum 1000 credits): ");
+            bool loop = true;
+            while (loop)
             {
                 try
                 {
                     createPerson.Credits = int.Parse(Console.ReadLine());
                     if (createPerson.Credits >= 1000)
-                        loop = true;
+                        loop = false;
                 }
                 catch
                 {
