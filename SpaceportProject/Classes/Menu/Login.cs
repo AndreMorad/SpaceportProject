@@ -6,23 +6,8 @@ using Newtonsoft.Json;
 
 namespace SpaceportProject
 {
-    public class MenuDockStarship : MenuCheckOutStarship
+    public class Login
     {
-        public static void ControlParkingspace()
-        {
-            MyContext myContext = new MyContext();
-            var availableSlots = myContext.Spaceships.Where(p => p.Payed == false).ToList();
-            if (availableSlots.Count < 20)
-            {
-                //AccessControl();
-                Console.WriteLine($"There is { (20 - availableSlots.Count)}");
-            }
-            else
-            {
-                Console.WriteLine("No parkingslots are available for the moment, please come back later!");
-            }
-        }
-
         public static void AccessControl()
         {
             RestClient client = new RestClient("https://swapi.co/api/");
@@ -57,7 +42,9 @@ namespace SpaceportProject
             }
             else
             {
-                var newCustomer = new CreateNewCustomer().AddNameToPerson(personName).AddFunds().StarshipControl().Charge().AddToDataBase();
+                var newCustomer = new CreateNewCustomer().AddNameToPerson(personName).AddFunds().UpdateDatabase();
+                var getCreatedPerson = context.Persons.Where(p => p.Name == personName).FirstOrDefault();
+                MainMenu.Menu(getCreatedPerson);
             }
         }
     }

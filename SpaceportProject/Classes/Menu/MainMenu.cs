@@ -2,7 +2,7 @@
 
 namespace SpaceportProject
 {
-    public class MainMenu : MenuDockStarship
+    public class MainMenu : Login
     {
         public static void Menu(DatabasePerson person)
         {
@@ -11,7 +11,6 @@ namespace SpaceportProject
             {
                 Console.WriteLine("Welcom to the Spaceport, you have to be in starwars movie to park here \n");
                 Console.WriteLine("plz enter you name to identify your self \n");
-                AccessControl();
 
                 Console.WriteLine("[0] Dock your ship");
                 Console.WriteLine("[1] Checkout ship");
@@ -19,20 +18,21 @@ namespace SpaceportProject
                 Console.WriteLine("[3] Exit");
 
                 string option = Console.ReadLine();
+
                 Console.Clear();
 
                 switch (option)
                 {
                     case "0":
-                        //ControlParkingspace();
+                        Program.ControlParkingspace(person);
                         break;
 
                     case "1":
-                        CheckingForShips("Luke Skywalker");
+                        MenuCheckOutStarship.CheckingForShips(person);
                         break;
 
                     case "2":
-                        Console.WriteLine("Option 2");
+                        MenuCheckOutStarship.History(person);
                         break;
 
                     case "3":

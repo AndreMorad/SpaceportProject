@@ -5,10 +5,10 @@ using Microsoft.Extensions.Configuration;
 
 namespace SpaceportProject
 {
-    public class CreateNewCustomer : IAddPerson, IAddStarship
+    public class CreateNewCustomer : IAddPerson, IConfigDatabase
     {
+        private MyContext myContext = new MyContext();
         public DatabasePerson createPerson = new DatabasePerson();
-        public DatabaseStarship createStarship = new DatabaseStarship();
 
         private RestClient client = new RestClient("https://swapi.co/api/");
 
@@ -39,55 +39,8 @@ namespace SpaceportProject
             return this;
         }
 
-        public IAddStarship StarshipControl()
-        {
-            bool loop = true;
-            while (loop)
-            {
-                Console.Write("Please validate your starship: ");
-                var starshipRequest = new RestRequest($"starships/?search={Console.ReadLine()}", DataFormat.Json);
-                var starshipResponse = client.Execute(starshipRequest);
-                var starship = JsonConvert.DeserializeObject<JSONStarshipRoot>(starshipResponse.Content);
-                if (starship.results.Count > 0)
-                {
-                    Console.WriteLine($"{starship.results[0].name} ready for parking");
-                    createStarship.ShipName = starship.results[0].name;
-                    createStarship.PricePerDay = 1000;
-                    loop = false;
-                }
-                else
-                {
-                    Console.WriteLine("Unauthorised spaceship");
-                }
-            }
-
-            return this;
-        }
-
-        public IAddStarship Charge()
-        {
-            bool loop = true;
-            Console.WriteLine($"The parkingcost for {this.createStarship.ShipName} will be {this.createStarship.PricePerDay} per day " +
-                $".\nEnter how many days you want to park (Minimum 1 day): ");
-            while (loop)
-            {
-                try
-                {
-                    createStarship.NumberOfDays = int.Parse(Console.ReadLine());
-                    loop = false;
-                }
-                catch
-                {
-                    Console.WriteLine("Error, please try again");
-                }
-            }
-            return this;
-        }
-
         public IConfigDatabase UpdateDatabase()
         {
-            MyContext myContext = new MyContext();
-            createPerson.Startships.Add(createStarship);
             myContext.Add<DatabasePerson>(this.createPerson);
             myContext.SaveChanges();
             return this;
