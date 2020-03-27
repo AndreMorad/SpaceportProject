@@ -1,6 +1,6 @@
 ﻿namespace SpaceportProject
 {
-    public interface IAddPerson : IAddStarship
+    public interface IAddPerson : IConfigDatabase
     {
         IAddPerson AddNameToPerson(string name);
 

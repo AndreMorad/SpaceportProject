@@ -15,16 +15,17 @@ namespace SpaceportProject
         public static void Main(string[] args)
         {
             AccessControl();
-            Menu();
         }
 
         public void login()
         {
-            // kollar om det finns ledig parkering
-            ControlParkingspace();
-
             // Kollar om personen finns i API
             AccessControl();
+            // komma in i menyn
+            //Menu();
+
+            // kollar om det finns ledig parkering
+            ControlParkingspace();
 
             // kollar om skeppet finns i API
             //StarshipControl();

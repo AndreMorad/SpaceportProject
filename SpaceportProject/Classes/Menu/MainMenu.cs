@@ -4,7 +4,7 @@ namespace SpaceportProject
 {
     public class MainMenu : MenuDockStarship
     {
-        public static void Menu()
+        public static void Menu(DatabasePerson person)
         {
             bool menu = true;
             while (menu)

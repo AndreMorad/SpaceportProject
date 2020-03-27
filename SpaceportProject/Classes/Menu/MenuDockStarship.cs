@@ -15,7 +15,7 @@ namespace SpaceportProject
             if (availableSlots.Count < 20)
             {
                 //AccessControl();
-                Console.WriteLine($"There is { availableSlots.Count}");
+                Console.WriteLine($"There is { (20 - availableSlots.Count)}");
             }
             else
             {
@@ -34,46 +34,30 @@ namespace SpaceportProject
                 var personResponse = client.Execute(personRequest);
                 var person = JsonConvert.DeserializeObject<JSONCharacterRoot>(personResponse.Content);
 
-                Console.Write("Please validate your starship: ");
-                var starshipRequest = new RestRequest($"starships/?search={Console.ReadLine()}", DataFormat.Json);
-                var starshipResponse = client.Execute(starshipRequest);
-                var starship = JsonConvert.DeserializeObject<JSONStarshipRoot>(starshipResponse.Content);
-
-                if (person.results.Count > 0 && starship.results.Count > 0)
+                if (person.results.Count > 0)
                 {
-                    ControlPersonInDatabase(person.results[0].name, starship.results[0].name);
+                    ControlPersonInDatabase(person.results[0].name);
                     loop = false;
                 }
                 else
                 {
                     Console.WriteLine("Access denied");
                 }
-                //if (starship.results.Count > 0)
-                //{
-                //    Console.WriteLine($"{starship.results[0].name} ready for parking");
-                //    createStarship.ShipName = starship.results[0].name;
-                //    createStarship.PricePerDay = 1000;
-                //    loop = false;
-                //}
-                //else
-                //{
-                //    Console.WriteLine("Unauthorised spaceship");
-                //}
             }
         }
 
-        public static void ControlPersonInDatabase(string personName, string shipName)
+        public static void ControlPersonInDatabase(string personName)
         {
             MyContext context = new MyContext();
-            var personCheck = context.Persons.Where(p => p.Name == personName).ToList();
-            if (personCheck.Count > 0)
+            var personCheck = context.Persons.Where(p => p.Name == personName).FirstOrDefault();
+            if (personCheck != null)
             {
                 Console.WriteLine($"Welcome back {personName}");
-                var newStarship = new CreateShip(personCheck[0]).StarshipControl(shipName).Charge().AddToDataBase();
+                MainMenu.Menu(personCheck);
             }
             else
             {
-                var newCustomer = new CreateNewCustomer().AddNameToPerson(personName).AddFunds().StarshipControl(shipName).Charge().AddToDataBase();
+                var newCustomer = new CreateNewCustomer().AddNameToPerson(personName).AddFunds().StarshipControl().Charge().AddToDataBase();
             }
         }
     }

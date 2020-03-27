@@ -39,19 +39,19 @@ namespace SpaceportProject
             return this;
         }
 
-        public IAddStarship StarshipControl(string shipName)
+        public IAddStarship StarshipControl()
         {
             bool loop = true;
             while (loop)
             {
-                //Console.Write("Please validate your starship: ");
-                //var starshipRequest = new RestRequest($"starships/?search={Console.ReadLine()}", DataFormat.Json);
-                //var starshipResponse = client.Execute(starshipRequest);
-                //var starship = JsonConvert.DeserializeObject<JSONStarshipRoot>(starshipResponse.Content);
+                Console.Write("Please validate your starship: ");
+                var starshipRequest = new RestRequest($"starships/?search={Console.ReadLine()}", DataFormat.Json);
+                var starshipResponse = client.Execute(starshipRequest);
+                var starship = JsonConvert.DeserializeObject<JSONStarshipRoot>(starshipResponse.Content);
                 if (starship.results.Count > 0)
                 {
-                    Console.WriteLine($"{shipName} ready for parking");
-                    createStarship.ShipName = shipName;
+                    Console.WriteLine($"{starship.results[0].name} ready for parking");
+                    createStarship.ShipName = starship.results[0].name;
                     createStarship.PricePerDay = 1000;
                     loop = false;
                 }
@@ -84,7 +84,7 @@ namespace SpaceportProject
             return this;
         }
 
-        public IAddStarship AddToDataBase()
+        public IConfigDatabase UpdateDatabase()
         {
             MyContext myContext = new MyContext();
             createPerson.Startships.Add(createStarship);
