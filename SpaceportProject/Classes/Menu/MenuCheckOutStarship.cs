@@ -70,11 +70,12 @@ namespace SpaceportProject
             int totalsum = shipToRemove.NumberOfDays * shipToRemove.PricePerDay;
             if (totalsum <= person.Credits)
             {
-                person.Credits = person.Credits - totalsum;
                 shipToRemove.Payed = true;
-                myContext.Persons.Update(person);
-                myContext.Spaceships.Update(shipToRemove);
+                person.Credits = person.Credits - totalsum;
+                myContext.Entry(myContext.Spaceships.FirstOrDefault(s => s.ShipID == shipToRemove.ShipID)).CurrentValues.SetValues(shipToRemove);
+                myContext.Entry(myContext.Persons.FirstOrDefault(p => p.PersonID == person.PersonID)).CurrentValues.SetValues(person);
                 myContext.SaveChanges();
+
                 Console.WriteLine($"The check out for {shipToRemove.ShipName} succeded, {totalsum} have been withdrawn from your card\n" +
                     $"your current amount of credits: {person.Credits}");
             }
@@ -93,7 +94,6 @@ namespace SpaceportProject
             List<DatabasePerson> newList = list.Where(p => p.PersonID == name.PersonID && p.Startships.Any(u => u.Payed == false)).ToList();
 
             var checkPerson = context.Persons.Where(p => p.PersonID == name.PersonID).ToList();
-
             var checkShip = context.Spaceships.Where(p => p.Payed == true && p.Person == checkPerson[0]).ToList();
 
             for (int i = 0; i < checkShip.Count; i++)

@@ -36,6 +36,10 @@ namespace SpaceportProject
                         break;
 
                     case "3":
+                        MenuCheckOutStarship.History(person);
+                        break;
+
+                    case "4":
                         Console.WriteLine("Exit program");
                         Console.ReadKey();
                         menu = false;
